@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NameListItems from "./NameListItems";
 
 function NameList() {
-  const nameList = [
+  const [loadData, setLoadData] = useState(new Date());
+  const [nameList, setNameList] = useState([
     {
       id: 1,
       name: { title: "mr", first: "brad", last: "gibson" },
@@ -29,7 +30,17 @@ function NameList() {
         medium: "https://randomuser.me/api/portraits/med/women/90.jpg",
       },
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    fetch("https://randomuser.me/api")
+      .then((response) => {
+        return response.json();
+      })
+      .then((responseData) => {
+        setNameList((nameList) => [...nameList, responseData.results[0]]);
+      });
+  }, [loadData]);
 
   const nameListComponent = () => {
     return nameList.map((aName) => {
@@ -45,9 +56,31 @@ function NameList() {
       );
     });
   };
+
+  const addUserHandler = () => {
+    setLoadData(new Date());
+    // const newUser = {
+    //   id: new Date(),
+    //   name: { title: "Miss", first: "Lisa", last: "Schröder" },
+    //   location: { city: "Bad Arolsen" },
+    //   email: "lisa.schroder@example.com",
+    //   dob: { date: "1956-02-17T00:01:03.713Z", age: 64 },
+    //   picture: {
+    //     medium: "https://randomuser.me/api/portraits/med/women/69.jpg",
+    //   },
+    // };
+    // // setNameList((nameList) => nameList.concat(newUser));
+
+    // //Spread Operator
+    // setNameList((nameList) => [...nameList, newUser]);
+  };
+
   return (
     <React.Fragment>
       <div className="container mt-5">
+        <button className="btn btn-primary mb-2" onClick={addUserHandler}>
+          Add Profile
+        </button>
         <ul className="list-group">{nameListComponent()}</ul>
       </div>
 

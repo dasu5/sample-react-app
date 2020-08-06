@@ -6,7 +6,7 @@ function NameListItems(props) {
     <li className="list-group-item shadow-sm">
       <div className="row align-items-center">
         <div className="col-2">
-          <img src={props.avatar} alt="" className="border border-dark rounded-circle"/>
+          <img src={props.avatar} alt={props.name} className="border border-dark rounded-circle"/>
         </div>
         <div className="col-7">
           <h3>{props.name}</h3>
